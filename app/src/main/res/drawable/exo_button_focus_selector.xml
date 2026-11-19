@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Focused state: Halo circular blanco/translúcido con borde nítido -->
+    <item android:state_focused="true">
+        <shape android:shape="oval">
+            <solid android:color="#4DFFFFFF" />
+            <stroke
+                android:width="2.5dp"
+                android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Pressed / Selected state -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#80FFFFFF" />
+            <stroke
+                android:width="2.5dp"
+                android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Default state: Transparente -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</selector>
