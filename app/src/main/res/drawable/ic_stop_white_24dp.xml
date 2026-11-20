@@ -4,16 +4,10 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Outer rounded rectangle (stroke) -->
-    <path
-        android:fillColor="#00000000"
-        android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round"
-        android:pathData="M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" />
-    <!-- Inner filled square (stop symbol) -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M9 9h6v6H9z" />
+        android:pathData="M19,4H5C3.34,4 2,5.34 2,7v10c0,1.66 1.34,3 3,3h14c1.66,0 3,-1.34 3,-3V7C22,5.34 20.66,4 19,4zM20.2,17c0,0.66 -0.54,1.2 -1.2,1.2H5c-0.66,0 -1.2,-0.54 -1.2,-1.2V7c0,-0.66 0.54,-1.2 1.2,-1.2h14c0.66,0 1.2,0.54 1.2,1.2V17z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M10.2,9h3.6c0.66,0 1.2,0.54 1.2,1.2v3.6c0,0.66 -0.54,1.2 -1.2,1.2h-3.6c-0.66,0 -1.2,-0.54 -1.2,-1.2v-3.6C9,9.54 9.54,9 10.2,9z" />
 </vector>
