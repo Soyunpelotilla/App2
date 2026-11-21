@@ -90,6 +90,10 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playerView = findViewById(R.id.player_view)
+        
+        // ← FIX 2: desactiva controller nativo de ExoPlayer (evita focus/bordes en móvil)
+        playerView.useController = false
+        
         initializePlayer()
 
         onBackPressedDispatcher.addCallback(this) {
