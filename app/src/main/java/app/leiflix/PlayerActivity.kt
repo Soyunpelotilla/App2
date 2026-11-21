@@ -44,9 +44,6 @@ import android.os.Looper
 import android.view.MotionEvent
 import androidx.core.view.ViewCompat
 import androidx.core.graphics.Insets
-import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.app.UiModeManager
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -61,17 +58,6 @@ class PlayerActivity : AppCompatActivity() {
     private val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) " +
             "Chrome/120.0.0.0 Safari/537.36"
-
-    // ← FIX: detecta TV real (excluye touchscreen)
-    private fun isTvDevice(): Boolean {
-        val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
-        val isTvMode = uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
-        val hasLeanback = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-        val hasTouchscreen = packageManager.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
-        
-        // TV real = (modo TV O leanback) Y NO touchscreen físico
-        return (isTvMode || hasLeanback) && !hasTouchscreen
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or 0x680)
@@ -90,10 +76,6 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playerView = findViewById(R.id.player_view)
-        
-        // ← FIX 2: desactiva controller nativo de ExoPlayer (evita focus/bordes en móvil)
-        playerView.useController = false
-        
         initializePlayer()
 
         onBackPressedDispatcher.addCallback(this) {
@@ -252,16 +234,13 @@ class PlayerActivity : AppCompatActivity() {
         // Rectangular / cuadrado para botones de la barra inferior (stop, audio, calidad, subtítulos, etc.)
         val bottomFocusDrawable = androidx.core.content.ContextCompat.getDrawable(this, R.drawable.exo_button_focus_selector_rect)
         val attachTvFocusEffect: (View) -> Unit = { v ->
-            // ← SOLO en TV/Android TV aplica el efecto
-            if (isTvDevice()) {
-                v.isFocusable = true
-                v.isFocusableInTouchMode = false
-                v.setOnFocusChangeListener { view, hasFocus ->
-                    if (hasFocus) {
-                        view.animate().scaleX(1.18f).scaleY(1.18f).setDuration(150).start()
-                    } else {
-                        view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
-                    }
+            v.isFocusable = true
+            v.isFocusableInTouchMode = false
+            v.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    view.animate().scaleX(1.18f).scaleY(1.18f).setDuration(150).start()
+                } else {
+                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
                 }
             }
         }
