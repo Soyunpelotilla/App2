@@ -62,11 +62,15 @@ class PlayerActivity : AppCompatActivity() {
             "AppleWebKit/537.36 (KHTML, like Gecko) " +
             "Chrome/120.0.0.0 Safari/537.36"
 
-    // ← NUEVA FUNCIÓN: detecta si es TV/Android TV
+    // ← FIX: detecta TV real (excluye touchscreen)
     private fun isTvDevice(): Boolean {
         val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
-        return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
-            || packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+        val isTvMode = uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
+        val hasLeanback = packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+        val hasTouchscreen = packageManager.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN)
+        
+        // TV real = (modo TV O leanback) Y NO touchscreen físico
+        return (isTvMode || hasLeanback) && !hasTouchscreen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
