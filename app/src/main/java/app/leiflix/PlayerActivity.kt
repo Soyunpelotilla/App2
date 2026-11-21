@@ -44,6 +44,9 @@ import android.os.Looper
 import android.view.MotionEvent
 import androidx.core.view.ViewCompat
 import androidx.core.graphics.Insets
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.app.UiModeManager
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -58,6 +61,13 @@ class PlayerActivity : AppCompatActivity() {
     private val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) " +
             "Chrome/120.0.0.0 Safari/537.36"
+
+    // ← NUEVA FUNCIÓN: detecta si es TV/Android TV
+    private fun isTvDevice(): Boolean {
+        val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
+        return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
+            || packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or 0x680)
@@ -234,6 +244,8 @@ class PlayerActivity : AppCompatActivity() {
         // Rectangular / cuadrado para botones de la barra inferior (stop, audio, calidad, subtítulos, etc.)
         val bottomFocusDrawable = androidx.core.content.ContextCompat.getDrawable(this, R.drawable.exo_button_focus_selector_rect)
         val attachTvFocusEffect: (View) -> Unit = { v ->
+            // ← GUARD CLAUSE: solo aplica en TV/Android TV
+            if (!isTvDevice()) return@attachTvFocusEffect
             v.isFocusable = true
             v.isFocusableInTouchMode = false
             v.setOnFocusChangeListener { view, hasFocus ->
