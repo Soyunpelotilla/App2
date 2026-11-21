@@ -244,15 +244,16 @@ class PlayerActivity : AppCompatActivity() {
         // Rectangular / cuadrado para botones de la barra inferior (stop, audio, calidad, subtítulos, etc.)
         val bottomFocusDrawable = androidx.core.content.ContextCompat.getDrawable(this, R.drawable.exo_button_focus_selector_rect)
         val attachTvFocusEffect: (View) -> Unit = { v ->
-            // ← GUARD CLAUSE: solo aplica en TV/Android TV
-            if (!isTvDevice()) return@attachTvFocusEffect
-            v.isFocusable = true
-            v.isFocusableInTouchMode = false
-            v.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    view.animate().scaleX(1.18f).scaleY(1.18f).setDuration(150).start()
-                } else {
-                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+            // ← SOLO en TV/Android TV aplica el efecto
+            if (isTvDevice()) {
+                v.isFocusable = true
+                v.isFocusableInTouchMode = false
+                v.setOnFocusChangeListener { view, hasFocus ->
+                    if (hasFocus) {
+                        view.animate().scaleX(1.18f).scaleY(1.18f).setDuration(150).start()
+                    } else {
+                        view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                    }
                 }
             }
         }
